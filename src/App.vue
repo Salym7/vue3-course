@@ -1,21 +1,25 @@
 <template>
   <div class="container">
-    <form class="form">
-      <h4>Create post</h4>
-      <input class="input" type="text" placeholder="title" />
-      <input class="input" type="text" placeholder="body" />
-      <button class="button">Create</button>
-    </form>
-
-    <div class="post" v-for="post in posts">
-      <div><strong>Title:</strong> {{ post.title }}</div>
-      <div><strong>Description:</strong>{{ post.body }}</div>
-    </div>
+    <h1>Page with post</h1>
+    <MyButton @click="showDialog" style="margin: 15px 0">Create post</MyButton>
+    <MyDialog v-model:show="dialogVisible">
+      <post-form @create="createPost" />
+    </MyDialog>
+    <PostList v-if="!isPostsLoading" :posts="posts" @remove="removePost" />
+    <div v-else>Loading ....</div>
   </div>
 </template>
 
 <script>
+import axios from "axios"
+import PostForm from "@/components/PostForm.vue"
+import PostList from "@/components/PostList.vue"
+
 export default {
+  components: {
+    PostForm,
+    PostList,
+  },
   data() {
     return {
       posts: [
@@ -23,10 +27,40 @@ export default {
         { id: 2, title: "Laravel", body: "php description" },
         { id: 3, title: "Vue", body: "es6 description" },
       ],
+      dialogVisible: false,
+      isPostsLoading: false,
     }
   },
 
-  methods: {},
+  methods: {
+    createPost(post) {
+      this.posts.push(post)
+      this.dialogVisible = false
+    },
+    removePost(post) {
+      this.posts = this.posts.filter((p) => p.id !== post.id)
+    },
+    showDialog() {
+      this.dialogVisible = true
+    },
+    async fetchPosts() {
+      try {
+        this.isPostsLoading = true
+        setTimeout(async () => {
+          const response = await axios.get(
+            "https://jsonplaceholder.typicode.com/posts?_limit=10"
+          )
+          this.posts = response.data
+          this.isPostsLoading = false
+        }, 1000)
+      } catch (e) {
+        alert(e)
+      }
+    },
+  },
+  mounted() {
+    this.fetchPosts()
+  },
 }
 </script>
 
@@ -40,30 +74,5 @@ export default {
   max-width: 1240px;
   margin: 0 auto;
   padding: 0 15px;
-}
-.post {
-  margin-top: 15px;
-  padding: 15px;
-  border: 3px solid teal;
-}
-.form {
-  width: 50%;
-  padding: 25px 0;
-}
-.input {
-  width: 100%;
-  border: 1px solid teal;
-  padding: 10px;
-  margin-top: 10px;
-  border-radius: 5px;
-}
-.button {
-  width: 50%;
-  border: 1px solid teal;
-  padding: 10px;
-  margin-top: 10px;
-  border-radius: 5px;
-  margin-left: 50%;
-  background: teal;
 }
 </style>
