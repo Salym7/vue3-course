@@ -15,19 +15,7 @@
       @remove="removePost"
     />
     <div v-else>Loading ....</div>
-    <div class="page__wrapper">
-      <div
-        v-for="pageNumber in totalPages"
-        :key="pageNumber"
-        class="page"
-        :class="{
-          'current-page': page === pageNumber,
-        }"
-        @click="changePage(pageNumber)"
-      >
-        {{ pageNumber }}
-      </div>
-    </div>
+    <MyPagination v-model="page" :totalPages="totalPages" :page="page" />
   </div>
 </template>
 
@@ -142,17 +130,5 @@ export default {
   display: flex;
   justify-content: space-between;
   margin: 15px 0;
-}
-.page__wrapper {
-  display: flex;
-  margin-top: 15px;
-}
-.page {
-  border: 1px solid black;
-  padding: 10px;
-  cursor: pointer;
-}
-.current-page {
-  border: 2px solid teal;
 }
 </style>
