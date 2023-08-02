@@ -13,7 +13,6 @@ export default {
   width: 100%;
   border: 1px solid teal;
   padding: 10px;
-  margin-top: 10px;
   border-radius: 5px;
   background: teal;
 }
