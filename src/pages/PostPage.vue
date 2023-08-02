@@ -14,7 +14,8 @@
     @remove="removePost"
   />
   <div v-else>Loading ....</div>
-  <div ref="observer" class="observer"></div>
+  <!-- <div ref="observer" class="observer"></div> -->
+  <div v-intersection="loadMorePosts" class="observer"></div>
   <!-- <MyPagination v-model="page" :totalPages="totalPages" :page="page" /> -->
 </template>
 
@@ -69,7 +70,7 @@ export default {
             "https://jsonplaceholder.typicode.com/posts",
             {
               params: {
-                _page: this.page,
+                _page: 1,
                 _limit: this.limit,
               },
             }
@@ -110,18 +111,18 @@ export default {
   },
   mounted() {
     this.fetchPosts()
-    const options = {
-      rootMargin: "0px",
-      threshold: 1.0,
-    }
 
-    const callback = (entries, observer) => {
-      if (entries[0].isIntersecting && this.page < this.totalPages) {
-        this.loadMorePosts()
-      }
-    }
-    const observer = new IntersectionObserver(callback, options)
-    observer.observe(this.$refs.observer)
+    // const options = {
+    //   rootMargin: "0px",
+    //   threshold: 1.0,
+    // }
+    // const callback = (entries, observer) => {
+    //   if (entries[0].isIntersecting && this.page < this.totalPages) {
+    //     this.loadMorePosts()
+    //   }
+    // }
+    // const observer = new IntersectionObserver(callback, options)
+    // observer.observe(this.$refs.observer)
   },
 
   computed: {
