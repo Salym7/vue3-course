@@ -4,7 +4,7 @@
     <MyInput v-model="post.title" placeholder="title" />
     <MyInput v-model="post.body" placeholder="body" />
 
-    <MyButton @click="createPost">Create</MyButton>
+    <MyButton style="margin-top: 15px" @click="createPost">Create</MyButton>
   </form>
 </template>
 
@@ -28,6 +28,14 @@ export default {
       }
     },
   },
+  // watch: {
+  //   post: {
+  //     handler(newVal) {
+  //       console.log(newVal)
+  //     },
+  //     deep: true,
+  //   },
+  // },
 }
 </script>
 
