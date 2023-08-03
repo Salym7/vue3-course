@@ -4,6 +4,7 @@ import components from "@/components/UI";
 import App from "./App.vue";
 import router from "@/router/router";
 import directives from "@/directives";
+import store from "./store";
 
 const app = createApp(App);
 
@@ -16,6 +17,7 @@ directives.forEach((directive) => {
 });
 
 app.use(router);
+app.use(store);
 // app.use(createPinia())
 
 app.mount("#app");
